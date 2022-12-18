@@ -15,22 +15,17 @@ import { UpdateProfile } from "./pages/updateProfile/UpdateProfile";
 import TagUser from "./components/tagUser/TagUser";
 import { io } from "socket.io-client";
 
-
 function App() {
   const { user } = useContext(AuthContext);
   const socket = useRef();
 
-
   useEffect(() => {
-    socket.current = io("https://socialbooksumit.herokuapp.com/");
-  }, [])
-
-
+    socket.current = io("https://socialbooksumit-api.onrender.com");
+  }, []);
 
   useEffect(() => {
     socket?.current.emit("addUser", user?._id);
-  }, [socket, user])
-
+  }, [socket, user]);
 
   return (
     <Router>
@@ -54,7 +49,6 @@ function App() {
         <Route path="/searchUser">
           <TagUser />
         </Route>
-
       </Switch>
     </Router>
   );
