@@ -20,7 +20,7 @@ function App() {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("https://socialbooksumit-api.onrender.com/connect/");
+    socket.current = io("https://socialbooksumit-api.onrender.com/");
   }, []);
 
   useEffect(() => {
