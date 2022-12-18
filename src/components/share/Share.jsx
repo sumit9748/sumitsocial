@@ -8,7 +8,7 @@ import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { ChildModal } from "../modal/modalcomponent";
 import { axiosInstance } from "../../config";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../pages/Firebase";
 
 export default function Share() {
@@ -32,7 +32,7 @@ export default function Share() {
 
       const imgRef = ref(storage, `images/${file.name + Date.now()}`);
 
-      uploadBytes(imgRef, file).then(() => {
+      uploadBytesResumable(imgRef, file).then(() => {
         getDownloadURL(imgRef).then((url) => {
           newPost.img = String(url);
           axiosInstance.post("/posts", newPost).then(() => {
