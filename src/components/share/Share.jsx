@@ -4,11 +4,11 @@ import Label from "@mui/icons-material/Label";
 import Room from "@mui/icons-material/Room";
 import EmojiEmotions from "@mui/icons-material/EmojiEmotions";
 
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, ChangeEvent } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { ChildModal } from "../modal/modalcomponent";
 import { axiosInstance } from "../../config";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../pages/Firebase";
 
 export default function Share() {
@@ -32,7 +32,7 @@ export default function Share() {
 
       const imgRef = ref(storage, `images/${file.name + Date.now()}`);
 
-      uploadBytesResumable(imgRef, file).then(() => {
+      uploadBytes(imgRef, file).then(() => {
         getDownloadURL(imgRef).then((url) => {
           newPost.img = String(url);
           axiosInstance.post("/posts", newPost).then(() => {
@@ -44,6 +44,7 @@ export default function Share() {
     } else {
       axiosInstance.post("/posts", newPost).then(() => {
         window.location.reload();
+        console.log("updated");
       });
     }
   };
@@ -78,7 +79,6 @@ export default function Share() {
                 style={{ display: "none" }}
                 type="file"
                 id="file"
-                accept=".png,.jpeg,.jpg"
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </label>
